@@ -1,0 +1,25 @@
+services:
+  # Development: `docker compose up`
+  dev:
+    build:
+      context: .
+      target: dev
+    image: run-it-up:dev
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./:/app
+      - /app/node_modules
+      - /app/.next
+
+  # Production: `docker compose up --build prod`
+  prod:
+    profiles: [prod]
+    build:
+      context: .
+      target: runner
+    image: run-it-up
+    ports:
+      - "3000:3000"
+    # env_file: .env.production
+    restart: unless-stopped
